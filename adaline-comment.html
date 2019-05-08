@@ -11784,35 +11784,41 @@ div#notebook {
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Hlavným rozdielom oproti Perceptronu je, že Perceptron berie výstup - binárnu odozvu (ako výsledok klasifikácie) a vypočíta chybu použitú na aktualizáciu váh, zatiaľ čo Adaline používa na aktualizáciu váh kontinuálnu hodnotu odozvy (ešte predtým ako je binárny výstup vyprodukovaný).</p>
+<p>To Adaline, umožňuje, aby jeho aktualizácie váh boli viac reprezentatívne voči aktuálnej chybe (väčšia presnosť) čo umožňuje, aby model konvergoval rýchlejšie.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Hlavným rozdielom oproti Perceptronu je, že Perceptron berie výstup - binárnu odozvu (ako výsledok klasifikácie) a vypočíta chybu použitú na aktualizáciu váh, </span>
-<span class="c1">#zatiaľ čo Adaline používa na aktualizáciu váh kontinuálnu hodnotu odozvy (ešte predtým ako je binárny výstup vyprodukovaný).</span>
-
-<span class="c1">#To Adaline, umožňuje, aby jeho aktualizácie váh boli viac reprezentatívne voči aktuálnej chybe (väčšia presnosť) čo umožňuje, aby model konvergoval rýchlejšie.</span>
-
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="k">class</span> <span class="nc">AdalineGD</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="c1">#definovanie rýchlosti učenia + počtu iterácií</span>
+    <span class="c1"># definovanie rýchlosti učenia + počtu iterácií</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rychlost_ucenia</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">pocet_iteracii</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
         
             <span class="bp">self</span><span class="o">.</span><span class="n">rychlost_ucenia</span> <span class="o">=</span> <span class="n">rychlost_ucenia</span> 
             <span class="bp">self</span><span class="o">.</span><span class="n">pocet_iteracii</span> <span class="o">=</span> <span class="n">pocet_iteracii</span>
     
-    <span class="c1">#funkcia procesu učenia</span>
-    <span class="c1">#naplnenie trénovacími dátami (polia X a y)</span>
+    <span class="c1"># funkcia procesu učenia</span>
+    <span class="c1"># naplnenie trénovacími dátami (polia X a y)</span>
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
 
-        <span class="c1">#inicializuje sa vektor váh s počiatočnými nulovými hodnotami - jednorozmerné pole s tromi nulovými údajmi (počet stĺpcov pola X = 2 + 1 stĺpec (pre váhu pre predikcie)</span>
+        <span class="c1"># inicializuje sa vektor váh s počiatočnými nulovými hodnotami - jednorozmerné pole s tromi nulovými údajmi </span>
+        <span class="c1"># (počet stĺpcov pola X = 2 + 1 stĺpec (pre váhu pre predikcie)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">cost_</span><span class="o">=</span><span class="p">[]</span>
         
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pocet_iteracii</span><span class="p">):</span> 
-            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net_input</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1">#do premennej vystup sa priradí čistý vstup</span>
-            <span class="n">errors</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">output</span><span class="p">)</span> <span class="c1">#do pola chýby sa zaznamenajú chyby (ak výstup - predikcia je iná ako 0 - tzn predikcia nevyšla, je potrebné aktualizovať váhy)</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net_input</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="c1">#do premennej výstup sa priradí čistý vstup</span>
+            <span class="n">errors</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">output</span><span class="p">)</span> <span class="c1">#do pola chýb sa zaznamenajú chyby (ak výstup mínus predikcia je rozdielna ako 0 - tzn. predikcia nevyšla, je potrebné aktualizovať váhy)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">w_</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rychlost_ucenia</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="c1">#aktualizácia vektora váh na pozícií 1 a 2 (parametre z pola X)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">w_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rychlost_ucenia</span> <span class="o">*</span> <span class="n">errors</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="c1">#aktualizácia vektora váh na pozícií 0 (predikcia)</span>
             
